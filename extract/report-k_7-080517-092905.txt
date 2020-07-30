@@ -1,0 +1,25 @@
+
+SVM
+Batch 1 result > 100.0, 0.00121  (135 / 15)
+ done in > 0.01824
+Batch 2 result > 100.0, 0.00115  (135 / 15)
+ done in > 0.01739
+Batch 3 result > 100.0, 0.00105  (135 / 15)
+ done in > 0.01586
+Batch 4 result > 100.0, 0.00109  (135 / 15)
+ done in > 0.01638
+Batch 5 result > 86.6666666667, 0.00114  (135 / 15)
+ done in > 0.01714
+Batch 6 result > 100.0, 0.00105  (135 / 15)
+ done in > 0.01587
+Batch 7 result > 93.3333333333, 0.00124  (135 / 15)
+ done in > 0.01860
+Batch 8 result > 100.0, 0.00103  (135 / 15)
+ done in > 0.01545
+Batch 9 result > 100.0, 0.00107  (135 / 15)
+ done in > 0.01607
+Batch 10 result > 100.0, 0.00103  (135 / 15)
+ done in > 0.01556
+==========================================
+best result : 100.0, <built-in function time>
+==========================================

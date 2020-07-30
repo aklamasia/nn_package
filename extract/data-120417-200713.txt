@@ -1,0 +1,1 @@
+Load time > 13.70878s ---- Dimension > 9708 * 289

@@ -1,0 +1,11 @@
+PCA from 2880 to 40 done in 5.963s
+PCA from 2880 to 40 done in 5.767s
+PCA from 2880 to 40 done in 5.887s
+PCA from 2880 to 40 done in 5.944s
+PCA from 2880 to 40 done in 6.061s
+PCA from 2880 to 40 done in 6.045s
+PCA from 2880 to 40 done in 6.129s
+PCA from 2880 to 40 done in 6.151s
+PCA from 2880 to 40 done in 6.253s
+PCA from 2880 to 40 done in 6.442s
+Load time > 8.26403s ---- Dimension > 9708 * 2881

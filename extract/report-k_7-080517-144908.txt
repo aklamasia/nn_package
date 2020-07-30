@@ -1,0 +1,13 @@
+==========================================
+Desc :
+
+filename => data/gabor/data_seg-3_ksize-27_scale-3.csv 
+pca => True 
+n_component => 100 
+nearest neighbor => 7 
+==========================================
+
+FKNN
+Batch 1 result > 74.15, 0.499832090231  (8733 / 975)
+ done in > 487.38872
+Batch 2

@@ -1,0 +1,11 @@
+PCA from 5760 to 100 done in 15.398s
+PCA from 5760 to 100 done in 16.360s
+PCA from 5760 to 100 done in 16.402s
+PCA from 5760 to 100 done in 16.949s
+PCA from 5760 to 100 done in 17.066s
+PCA from 5760 to 100 done in 17.155s
+PCA from 5760 to 100 done in 17.420s
+PCA from 5760 to 100 done in 17.316s
+PCA from 5760 to 100 done in 17.332s
+PCA from 5760 to 100 done in 17.337s
+Load time > 19.05675s ---- Dimension > 9708 * 5761

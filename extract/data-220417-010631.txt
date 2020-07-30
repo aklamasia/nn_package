@@ -1,0 +1,11 @@
+PCA from 144 to 100 done in 0.642s
+PCA from 144 to 100 done in 0.574s
+PCA from 144 to 100 done in 0.626s
+PCA from 144 to 100 done in 0.571s
+PCA from 144 to 100 done in 0.586s
+PCA from 144 to 100 done in 0.568s
+PCA from 144 to 100 done in 0.575s
+PCA from 144 to 100 done in 0.569s
+PCA from 144 to 100 done in 0.569s
+PCA from 144 to 100 done in 0.568s
+Load time > 1.13204s ---- Dimension > 9708 * 145
