@@ -1,1 +1,0 @@
-Load time > 0.00145s ---- Dimension > 150 * 5
