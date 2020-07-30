@@ -3,7 +3,7 @@ from time import time, strftime
 from itertools import groupby
 import math
 import operator
-import sys
+from utils import progress
 
 def remapLabels(rlabTrainSet=[],rlabTestSet=[] ):
     legendLabels = list(set(rlabTrainSet))
@@ -107,15 +107,6 @@ def getAccuracy(labTestSet, predictions):
             correct += 1
     return round((correct/float(len(labTestSet))) * 100.00, 2) 
     
-def progress(count, total, suffix=''):
-    bar_len = 60
-    filled_len = int(round(bar_len * count / float(total)))
-
-    percents = round(100.0 * count / float(total), 1)
-    bar = '#' * filled_len + '-' * (bar_len - filled_len)
-
-    sys.stdout.write('\r[%s] %s%s ...%s/%s' % (bar, percents, '%', str(count), str(total)))
-    sys.stdout.flush()
 
 def fknn(trainingSet, labTrainSet, testSet, labTestSet, k):
     tempLabTestSet = labTestSet

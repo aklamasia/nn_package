@@ -4,6 +4,7 @@ from itertools import groupby
 import math
 import operator
 import sys
+from utils import progress
 
 def euclideanDistance(instance1, instance2, length):
     distance = 0
@@ -67,15 +68,6 @@ def clasifyClass(trainData,trainLabel,testDataInstance,index,k,nClasses):
 
     return max_index
 
-def progress(count, total, suffix=''):
-    bar_len = 60
-    filled_len = int(round(bar_len * count / float(total)))
-
-    percents = round(100.0 * count / float(total), 1)
-    bar = '#' * filled_len + '-' * (bar_len - filled_len)
-
-    sys.stdout.write('[%s] %s%s ...%s/%s\r' % (bar, percents, '%', str(count), str(total)))
-    sys.stdout.flush()
 
 def frnn(trainData, trainLabel, testData, testLabel, k):
     

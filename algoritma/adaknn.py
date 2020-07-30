@@ -2,13 +2,14 @@ import math
 import operator
 from time import time, strftime
 import sys
+from utils import progress
 
 def calculateRadius(trainData,trainLabel):
     radius =[]
     for indexTraining1 in range(len(trainData)):
         ownClass = trainLabel[indexTraining1]
         minDist = sys.float_info.max
-        progress(indexTraining1+1, len(trainData))
+        # progress(indexTraining1+1, len(trainData))
         for indexTraining2 in range(len(trainData)):
             if ownClass != trainLabel[indexTraining2]:
                 length = len(trainData[indexTraining2])
@@ -62,16 +63,6 @@ def getAccuracy(testLabel, predictions):
             correct += 1
     return round((correct/float(len(testLabel))) * 100.00, 2)
 
-def progress(count, total, suffix=''):
-    bar_len = 60
-    filled_len = int(round(bar_len * count / float(total)))
-
-    percents = round(100.0 * count / float(total), 1)
-    bar = '#' * filled_len + '-' * (bar_len - filled_len)
-
-    sys.stdout.write('[%s] %s%s ...%s/%s\r' % (bar, percents, '%', str(count), str(total)))
-    sys.stdout.flush()
-
 
 def adaknn(trainData, trainLabel, testData, testLabel,k):
     predictions=[]
@@ -80,7 +71,7 @@ def adaknn(trainData, trainLabel, testData, testLabel,k):
     t3 = time()
     radius = calculateRadius(trainData,trainLabel)
     time_radius= ("%0.3fs"%(time() - t3))
-    print("All calculate radius done in %s" % time_radius)
+    # print("All calculate radius done in %s" % time_radius)
     
     t1 = time()
     for x in range(len(testData)):

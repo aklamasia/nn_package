@@ -4,6 +4,7 @@ from itertools import groupby
 import math
 import operator
 import sys
+from utils import progress
 
 def euclideanDistance(instance1, instance2, length):
     distance = 0
@@ -75,7 +76,7 @@ def assignMembership(trainData, trainLabel,kMax, nClasses):
                     instance_member[x]+=0.49*term
                     
             i+=1
-            progress(i,len(trainData)*(kMax/2+1))
+            # progress(i,len(trainData)*(kMax/2+1))
             temp.append(instance_member)
         tempMem.append(temp)
         count+=1.0
@@ -122,16 +123,6 @@ def computeMembership(testDataInstance,trainData, membership, k,m, nClasses):
     
     return testMembership
 
-def progress(count, total, suffix=''):
-    bar_len = 60
-    filled_len = int(round(bar_len * count / float(total)))
-
-    percents = round(100.0 * count / float(total), 1)
-    bar = '#' * filled_len + '-' * (bar_len - filled_len)
-
-    sys.stdout.write('[%s] %s%s ...%s/%s\r' % (bar, percents, '%', str(count), str(total)))
-    sys.stdout.flush()
-
 def computeClass(testMembership):
     max_index, max_value = max(enumerate(testMembership), key=operator.itemgetter(1))
     return max_index       
@@ -148,7 +139,7 @@ def it2fknn(trainData, trainLabel, testData, testLabel,k):
     t0 = time()
     membership = assignMembership(trainData,labTrainSet,k,nClasses)
     timeextract= ("%0.5fs"%((time() - t0)))
-    print "assign membership >" + timeextract
+    # print "assign membership >" + timeextract
     correct = 0
     t1 = time()
     for x in range(len(testData)):

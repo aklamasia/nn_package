@@ -2,6 +2,7 @@ import math
 import operator
 from time import time, strftime
 import sys
+from utils import progress
 
 
 def euclideanDistance(instance1, instance2, length):
@@ -40,16 +41,6 @@ def getAccuracy(testLabel, predictions):
         if testLabel[x] == predictions[x]:
             correct += 1
     return round((correct/float(len(testLabel))) * 100.00, 2)
-
-def progress(count, total, suffix=''):
-    bar_len = 60
-    filled_len = int(round(bar_len * count / float(total)))
-
-    percents = round(100.0 * count / float(total), 1)
-    bar = '#' * filled_len + '-' * (bar_len - filled_len)
-
-    sys.stdout.write('[%s] %s%s ...%s/%s\r' % (bar, percents, '%', str(count), str(total)))
-    sys.stdout.flush()
 
 def knn(trainData, trainLabel, testData, testLabel,k):
     predictions=[]
