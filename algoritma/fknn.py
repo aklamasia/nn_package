@@ -128,4 +128,4 @@ def fknn(trainingSet, labTrainSet, testSet, labTestSet, k):
     
     accuracy = getAccuracy(tempLabTestSet, predictions)
    
-    return accuracy, (time() - t0)/len(testSet)
+    return accuracy, round(((time() - t0)/len(testSet)),5)

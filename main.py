@@ -1,11 +1,11 @@
 import csv
 import argparse
-import random
-import math
-import operator
+import textwrap
+import sys
 from time import time, strftime
-from sklearn.decomposition import PCA
-from crossvalidation2 import loadDataset
+from utils import average, best_accouracy, best_time, calculate_result, writer_report
+from loader import load_data_stratified, load_data_unstratified
+from dict import algorithm_list
 from algoritma.knn import knn
 from algoritma.adaknn import adaknn
 from algoritma.fknn import fknn
@@ -13,19 +13,69 @@ from algoritma.it2fknn import it2fknn
 from algoritma.frnn import frnn
 from algoritma.frnn_frs import frnn_frs 
 from algoritma.frnn_vqrs import frnn_vqrs
-from algoritma.if_knn import if_knn
 
-ap = argparse.ArgumentParser()
-ap.add_argument("-f", "--file", help = "path to the file")
-ap.add_argument("-p", "--pca", default="False", help = "use mode pca, default false")
-ap.add_argument("-n", "--n_comp", default=100, help = "n_components for pca")
+ap = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter,
+                             prog='NNP',
+                             description=textwrap.dedent('''\
+                               Nearest Neighborhood Package
+                             -------------------------------------------
+                               This is project for educational purpose
+                               Author by : Ramadhan Adityo Kuncoro
+                               4.8.2020
+
+                             '''))
+
+ap.add_argument("-f", "--file",
+                help = "path to the file", metavar = "")
+ap.add_argument("-kf", "--kfold", default=10, type=int,
+                help = "k fold for crossvalidation (default: 10)", metavar = "")
+ap.add_argument("-p", "--pca", action='store_true',
+                help = "use pca (default: false)")
+ap.add_argument("-n", "--n_comp", default=1, type=int,
+                help = "n components for pca max is n coloumn (default: 1)", metavar = "")
+ap.add_argument("-k", "--k", default=3, type=int, choices=range(3, 15, 2),
+                help = "k for NN algorithm [3,5,7,9,11,13] (default: 3)", metavar = "")
+ap.add_argument("-s", "--sampling", action='store_true',
+                help = "sampling method use stratified sampling (default: false)")
+ap.add_argument("-a", "--algorithm", default=[1], type=int, nargs='+',
+                help = textwrap.dedent('''\
+                                        You can choose more than one algorithm
+                                        1  KNN ( default )
+                                        2  AdaKNN
+                                        3  FKNN
+                                        4  It2FKNN
+                                        5  FRNN
+                                        6  FRNN FRS
+                                        7  FRNN VQRS
+                                        8  All
+                                       '''),metavar = "")
+
+
+
 args = vars(ap.parse_args())
+
 filename = args["file"]
 pca = args["pca"]
-n_component = int(args["n_comp"])
+sampling = args["sampling"]
+k = args["k"]
+kfold = args["kfold"]
+n_component = "-" if not pca else args["n_comp"]
+algorithms = args["algorithm"]
+if algorithms == [8]:
+    algorithm_label =  ', '.join(x['label'] for x in algorithm_list)
+    algorithms = [1,2,3,4,5,6,7]
+else:
+    algorithm_label =  ', '.join(algorithm_list[x-1]['label'] for x in algorithms)
+    
+if filename:
+    if sampling:
+        trainData, trainLabel, testData, testLabel=load_data_stratified(filename,kfold,pca,n_component)
+    else:
+        trainData, trainLabel, testData, testLabel=load_data_unstratified(filename,kfold,pca,n_component)
+else:
+    print("Please Use -f parameter and fill path to file data")
+    sys.exit()
 
-trainData, trainLabel, testData, testLabel=loadDataset(filename,10,pca,n_component)
-k = 7
 
 tanggal = strftime("%d%m%y-%H%M%S")
 text_file = open("extract/report-k_"+str(k)+"-"+tanggal+".txt", "w")
@@ -35,178 +85,94 @@ text_file.write("\nfilename => %s \n" %filename)
 text_file.write("pca => %s \n" %pca)
 text_file.write("n_component => %s \n" %n_component)
 text_file.write("nearest neighbor => %s \n" %k)
+text_file.write("data per batch (train/test) => (%s/%s) \n" %(len(trainData[0]),len(testData[0])))
+text_file.write("algorithm => %s \n" %algorithm_label)
 text_file.write("==========================================\n")
 
-list_knn=[]
-print "\nKNN"
-text_file.write("\nKNN\n")
-for x in  range(10):
-    t0=time()
-    print "Batch " + str(x+1)
-    text_file.write("Batch " + str(x+1))
-    accouracy, timel = knn(trainData[x], trainLabel[x], testData[x], testLabel[x],k)
-    print('')
-    print ("result > ",accouracy,timel)
-    text_file.write(" result > %s, %s  (%s / %s)\n" %(accouracy,timel,(len(trainData[x])),(len(testData[x]))))
-    timeload= ("%0.5f"%(time() - t0))
-    print ("done in > ",timeload)
-    text_file.write(" done in > %s\n" %(timeload))
-    list_knn.append((accouracy,timel))
-print "=========================================="
-text_file.write("==========================================\n")
-print (("avg result  :", sum(row[0] for row in list_knn)/10, sum(row[1] for row in list_knn)/10))
-text_file.write( (("avg result  : %s, %s\n" %(sum(row[0] for row in list_knn)/10, sum(row[1] for row in list_knn)/10))))
-print (("best result :", max(row[0] for row in list_knn), min(row[1] for row in list_knn)))
-text_file.write((("best result : %s, %s\n" % (max(row[0] for row in list_knn), min(row[1] for row in list_knn)))))
-print "=========================================="
-text_file.write("==========================================\n")
 
-list_adaknn=[]
-print "\nAdaptive KNN"
-text_file.write("\nAdaptive KNN\n")
-for x in  range(10):
-    t0=time()
-    print "Batch " + str(x+1)
-    text_file.write("Batch " + str(x+1))
-    accouracy, timel, timeextract = adaknn(trainData[x], trainLabel[x], testData[x], testLabel[x],k)
-    print('')
-    print ("assign radius > ", timeextract)
-    text_file.write("\nassign radius > %s\n" %timeextract)
-    print ("result > ",accouracy,timel)
-    text_file.write(" result > %s, %s  (%s / %s)\n" %(accouracy,timel,(len(trainData[x])),(len(testData[x]))))
-    timeload= ("%0.5f"%(time() - t0))
-    print ("done in > ",timeload)
-    text_file.write(" done in > %s\n" %(timeload))
-    list_adaknn.append((accouracy,timel))
-print "=========================================="
-text_file.write("==========================================\n")
-print (("avg result  :", sum(row[0] for row in list_adaknn)/10, sum(row[1] for row in list_adaknn)/10))
-text_file.write( (("avg result  : %s, %s\n" %(sum(row[0] for row in list_adaknn)/10, sum(row[1] for row in list_adaknn)/10))))
-print (("best result :", max(row[0] for row in list_adaknn), min(row[1] for row in list_adaknn)))
-text_file.write((("best result : %s, %s\n" % (max(row[0] for row in list_adaknn), min(row[1] for row in list_adaknn)))))
-print "=========================================="
-text_file.write("==========================================\n")
+for a in algorithms:
+    index = a-1
+    if a == 1 or a == 3 or a == 5 or a == 6 or a ==7:
+        print "\n"+algorithm_list[index]['label']
+        for x in  range(kfold):
+            print "Batch " + str(x+1)
+            
+            if a == 1:
+                t0=time()
+                accouracy, timel = knn(trainData[x], trainLabel[x], testData[x], testLabel[x],k)
+                timeload= ("%0.5f"%(time() - t0))
+            elif a == 3:
+                t0=time()
+                accouracy, timel = fknn(trainData[x], trainLabel[x], testData[x], testLabel[x],k)
+                timeload= ("%0.5f"%(time() - t0))
+            elif a == 5:
+                t0=time()
+                accouracy, timel = frnn(trainData[x], trainLabel[x], testData[x], testLabel[x],k)
+                timeload= ("%0.5f"%(time() - t0))
+            elif a == 6:
+                t0=time()
+                accouracy, timel = frnn_frs(trainData[x], trainLabel[x], testData[x], testLabel[x],k)
+                timeload= ("%0.5f"%(time() - t0))
+            elif a == 7:
+                t0=time()
+                accouracy, timel = frnn_vqrs(trainData[x], trainLabel[x], testData[x], testLabel[x],k)
+                timeload= ("%0.5f"%(time() - t0))
+            print('')
+            print ("result > ",accouracy,timel)
+            print ("done in > ",timeload)
+            algorithm_list[index]['data']['accouracy'].append(accouracy)
+            algorithm_list[index]['data']['average_time'].append(timel)
+            algorithm_list[index]['data']['total_time'].append(timeload)
 
-list_fknn=[]
-print "\nFKNN"
-text_file.write("\nFKNN\n")
-for x in  range(10):
-    t0=time()
-    print "Batch " + str(x+1)
-    text_file.write("Batch " + str(x+1))
-    accouracy, timel = fknn(trainData[x], trainLabel[x], testData[x], testLabel[x],k)
-    print('')
-    print ("result > ",accouracy,timel)
-    text_file.write(" result > %s, %s  (%s / %s)\n" %(accouracy,timel,(len(trainData[x])),(len(testData[x]))))
-    timeload= ("%0.5f"%(time() - t0))
-    print ("done in > ",timeload)
-    text_file.write(" done in > %s\n" %(timeload))
-    list_fknn.append((accouracy,timel))
-print "=========================================="
-text_file.write("==========================================\n")
-print (("avg result  :", sum(row[0] for row in list_fknn)/10, sum(row[1] for row in list_fknn)/10))
-text_file.write( (("avg result  : %s, %s\n" %(sum(row[0] for row in list_fknn)/10, sum(row[1] for row in list_fknn)/10))))
-print (("best result :", max(row[0] for row in list_fknn), min(row[1] for row in list_fknn)))
-text_file.write((("best result : %s, %s\n" % (max(row[0] for row in list_fknn), min(row[1] for row in list_fknn)))))
-print "=========================================="
-text_file.write("==========================================\n")
-    
-list_it2fknn=[]
-print "\nIT2FKNN"
-text_file.write("\nIT2FKNN\n")
-for x in  range(10):
-    t0=time()
-    print "Batch " + str(x+1)
-    text_file.write("Batch " + str(x+1))
-    accouracy, timel, timeextract= it2fknn(trainData[x], trainLabel[x], testData[x], testLabel[x],k)
-    print('')
-    print ("assign membership > ", timeextract)
-    text_file.write("\nassign membership > %s\n" %timeextract)
-    print ("result > ",accouracy,timel)
-    text_file.write(" result > %s, %s  (%s / %s)\n" %(accouracy,timel,(len(trainData[x])),(len(testData[x]))))
-    timeload= ("%0.5f"%(time() - t0))
-    print ("done in > ",timeload)
-    text_file.write(" done in > %s\n" %(timeload))
-    list_it2fknn.append((accouracy,timel))
-print "=========================================="
-text_file.write("==========================================\n")
-print (("avg result  :", sum(row[0] for row in list_it2fknn)/10, sum(row[1] for row in list_it2fknn)/10))
-text_file.write( (("avg result  : %s, %s\n" %(sum(row[0] for row in list_it2fknn)/10, sum(row[1] for row in list_it2fknn)/10))))
-print (("best result :", max(row[0] for row in list_it2fknn), min(row[1] for row in list_it2fknn)))
-text_file.write((("best result : %s, %s\n" % (max(row[0] for row in list_it2fknn), min(row[1] for row in list_it2fknn)))))
-print "=========================================="
-text_file.write("==========================================\n")
-
-list_frnn=[]
-print "\nFRNN"
-text_file.write("\nFRNN\n")
-for x in  range(10):
-    t0=time()
-    print "Batch " + str(x+1)
-    text_file.write("Batch " + str(x+1))
-    accouracy, timel = frnn(trainData[x], trainLabel[x], testData[x], testLabel[x],k)
-    print('')
-    print ("result > ",accouracy,timel)
-    text_file.write(" result > %s, %s  (%s / %s)\n" %(accouracy,timel,(len(trainData[x])),(len(testData[x]))))
-    timeload= ("%0.5f"%(time() - t0))
-    print ("done in > ",timeload)
-    text_file.write(" done in > %s\n" %(timeload))
-    list_frnn.append((accouracy,timel))
-print "=========================================="
-text_file.write("==========================================\n")
-print (("avg result  :", sum(row[0] for row in list_frnn)/10, sum(row[1] for row in list_frnn)/10))
-text_file.write( (("avg result  : %s, %s\n" %(sum(row[0] for row in list_frnn)/10, sum(row[1] for row in list_frnn)/10))))
-print (("best result :", max(row[0] for row in list_frnn), min(row[1] for row in list_frnn)))
-text_file.write((("best result : %s, %s\n" % (max(row[0] for row in list_frnn), min(row[1] for row in list_frnn)))))
-print "=========================================="
-text_file.write("==========================================\n")
-    
-list_frnn_frs=[]
-print "\nFRNN-FRS"
-text_file.write("\nFRNN-FRS\n")
-for x in  range(10):
-    t0=time()
-    print "Batch " + str(x+1)
-    text_file.write("Batch " + str(x+1))
-    accouracy, timel = frnn_frs(trainData[x], trainLabel[x], testData[x], testLabel[x],k)
-    print('')
-    print ("result > ",accouracy,timel)
-    text_file.write(" result > %s, %s  (%s / %s)\n" %(accouracy,timel,(len(trainData[x])),(len(testData[x]))))
-    timeload= ("%0.5f"%(time() - t0))
-    print ("done in > ",timeload)
-    text_file.write(" done in > %s\n" %(timeload))
-    list_frnn_frs.append((accouracy,timel))
-print "=========================================="
-text_file.write("==========================================\n")
-print (("avg result  :", sum(row[0] for row in list_frnn_frs)/10, sum(row[1] for row in list_frnn_frs)/10))
-text_file.write( (("avg result  : %s, %s\n" %(sum(row[0] for row in list_frnn_frs)/10, sum(row[1] for row in list_frnn_frs)/10))))
-print (("best result :", max(row[0] for row in list_frnn_frs), min(row[1] for row in list_frnn_frs)))
-text_file.write((("best result : %s, %s\n" % (max(row[0] for row in list_frnn_frs), min(row[1] for row in list_frnn_frs)))))
-print "=========================================="
-text_file.write("==========================================\n")
-    
-list_frnn_vqrs=[]
-print "\nFRNN-VQRS"
-text_file.write("\nFRNN-VQRS\n")
-for x in  range(10):
-    t0=time()
-    print "Batch " + str(x+1)
-    text_file.write("Batch " + str(x+1))
-    accouracy, timel = frnn_vqrs(trainData[x], trainLabel[x], testData[x], testLabel[x],k)
-    print('')
-    print ("result > ",accouracy,timel)
-    text_file.write(" result > %s, %s  (%s / %s)\n" %(accouracy,timel,(len(trainData[x])),(len(testData[x]))))
-    timeload= ("%0.5f"%(time() - t0))
-    print ("done in > ",timeload)
-    text_file.write(" done in > %s\n" %(timeload))
-    list_frnn_vqrs.append((accouracy,timel))
-print "=========================================="
-text_file.write("==========================================\n")
-print (("avg result  :", sum(row[0] for row in list_frnn_vqrs)/10, sum(row[1] for row in list_frnn_vqrs)/10))
-text_file.write( (("avg result  : %s, %s\n" %(sum(row[0] for row in list_frnn_vqrs)/10, sum(row[1] for row in list_frnn_vqrs)/10))))
-print (("best result :", max(row[0] for row in list_frnn_vqrs), min(row[1] for row in list_frnn_vqrs)))
-text_file.write((("best result : %s, %s\n" % (max(row[0] for row in list_frnn_vqrs), min(row[1] for row in list_frnn_vqrs)))))
-print "=========================================="
-text_file.write("==========================================\n")
+        calculate_result(algorithm_list, index)            
+        print "=========================================="
+        print ("avg result  :%s, %s" %(algorithm_list[index]['average_result_accouracy'], algorithm_list[index]['average_result_time']))
+        print ("best result :%s, %s" %(algorithm_list[index]['best_result_accouracy'], algorithm_list[index]['best_result_time']))
+        print "=========================================="
+        writer_report(text_file, algorithm_list, index, kfold)
+        
+    if a == 2:
+        print "\n"+algorithm_list[index]['label']
+        for x in  range(kfold):
+            print "Batch " + str(x+1)
+            t0=time()
+            accouracy, timel, timeextract = adaknn(trainData[x], trainLabel[x], testData[x], testLabel[x],k)
+            timeload= ("%0.5f"%(time() - t0))
+            print('')
+            print ("result > ",accouracy,timel, timeextract)
+            print ("done in > ",timeload)
+            algorithm_list[index]['data']['accouracy'].append(accouracy)
+            algorithm_list[index]['data']['average_time'].append(timel)
+            algorithm_list[index]['data']['total_time'].append(timeload)
+            algorithm_list[index]['data']['radius_time'].append(timeextract)
+            
+        calculate_result(algorithm_list, index)            
+        print "=========================================="
+        print ("avg result  :%s, %s" %(algorithm_list[index]['average_result_accouracy'], algorithm_list[index]['average_result_time']))
+        print ("best result :%s, %s" %(algorithm_list[index]['best_result_accouracy'], algorithm_list[index]['best_result_time']))
+        print "=========================================="
+        writer_report(text_file, algorithm_list, index, kfold)
+            
+    if a == 4:
+        print "\n"+algorithm_list[index]['label']
+        for x in  range(kfold):
+            print "Batch " + str(x+1)
+            t0=time()
+            accouracy, timel, timeextract= it2fknn(trainData[x], trainLabel[x], testData[x], testLabel[x],k)
+            timeload= ("%0.5f"%(time() - t0))
+            print('')
+            print ("result > ",accouracy,timel, timeextract)
+            print ("done in > ",timeload)
+            algorithm_list[index]['data']['accouracy'].append(accouracy)
+            algorithm_list[index]['data']['average_time'].append(timel)
+            algorithm_list[index]['data']['total_time'].append(timeload)
+            algorithm_list[index]['data']['membership_time'].append(timeextract)
+            
+        calculate_result(algorithm_list, index)            
+        print "=========================================="
+        print ("avg result  :%s, %s" %(algorithm_list[index]['average_result_accouracy'], algorithm_list[index]['average_result_time']))
+        print ("best result :%s, %s" %(algorithm_list[index]['best_result_accouracy'], algorithm_list[index]['best_result_time']))
+        print "=========================================="
+        writer_report(text_file, algorithm_list, index, kfold)
 
 text_file.close()

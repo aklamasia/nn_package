@@ -67,4 +67,4 @@ def knn(trainData, trainLabel, testData, testLabel,k):
         
     timeextract_feature= ("%0.5fs"%((time() - t1)/len(testData)))
     accuracy = getAccuracy(testLabel, predictions)
-    return accuracy, (time() - t1)/len(testData)
+    return accuracy, round(((time() - t1)/len(testData)),5)

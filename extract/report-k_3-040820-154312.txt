@@ -1,0 +1,192 @@
+==========================================
+Desc :
+
+filename => sample/iris.csv 
+pca => False 
+n_component => - 
+nearest neighbor => 3 
+data per batch (train/test) => (135/15) 
+algorithm => KNN, AdaKNN, FKNN, It2FKNN, FRNN, FRNN FRS, FRNN VQRS 
+==========================================
+
+KNN
+Batch 1
+result > accouracy = 100.00% average time = 0.00027s total time = 0.00405s 
+Batch 2
+result > accouracy = 100.00% average time = 0.00019s total time = 0.00284s 
+Batch 3
+result > accouracy = 93.33% average time = 0.00019s total time = 0.00281s 
+Batch 4
+result > accouracy = 80.00% average time = 0.00019s total time = 0.00285s 
+Batch 5
+result > accouracy = 100.00% average time = 0.00019s total time = 0.00287s 
+Batch 6
+result > accouracy = 93.33% average time = 0.00018s total time = 0.00273s 
+Batch 7
+result > accouracy = 93.33% average time = 0.00018s total time = 0.00269s 
+Batch 8
+result > accouracy = 93.33% average time = 0.00018s total time = 0.00273s 
+Batch 9
+result > accouracy = 100.00% average time = 0.00018s total time = 0.00266s 
+Batch 10
+result > accouracy = 100.00% average time = 0.00020s total time = 0.00308s 
+==========================================
+avg result  :95.33, 0.00020
+best result :100.00, 0.00018
+==========================================
+
+AdaKNN
+Batch 1
+result > accouracy = 100.00% radius time = 0.017ss average time = 0.00021s total time = 0.01974s 
+Batch 2
+result > accouracy = 100.00% radius time = 0.014ss average time = 0.00020s total time = 0.01697s 
+Batch 3
+result > accouracy = 93.33% radius time = 0.014ss average time = 0.00022s total time = 0.01720s 
+Batch 4
+result > accouracy = 86.67% radius time = 0.013ss average time = 0.00021s total time = 0.01597s 
+Batch 5
+result > accouracy = 100.00% radius time = 0.014ss average time = 0.00021s total time = 0.01694s 
+Batch 6
+result > accouracy = 93.33% radius time = 0.018ss average time = 0.00023s total time = 0.02142s 
+Batch 7
+result > accouracy = 86.67% radius time = 0.013ss average time = 0.00027s total time = 0.01711s 
+Batch 8
+result > accouracy = 93.33% radius time = 0.012ss average time = 0.00020s total time = 0.01552s 
+Batch 9
+result > accouracy = 100.00% radius time = 0.014ss average time = 0.00022s total time = 0.01688s 
+Batch 10
+result > accouracy = 100.00% radius time = 0.013ss average time = 0.00020s total time = 0.01557s 
+==========================================
+avg result  :95.33, 0.00022
+best result :100.00, 0.00020
+==========================================
+
+FKNN
+Batch 1
+result > accouracy = 100.00% average time = 0.00027s total time = 0.00405s 
+Batch 2
+result > accouracy = 100.00% average time = 0.00019s total time = 0.00284s 
+Batch 3
+result > accouracy = 93.33% average time = 0.00019s total time = 0.00281s 
+Batch 4
+result > accouracy = 80.00% average time = 0.00019s total time = 0.00285s 
+Batch 5
+result > accouracy = 100.00% average time = 0.00019s total time = 0.00287s 
+Batch 6
+result > accouracy = 93.33% average time = 0.00018s total time = 0.00273s 
+Batch 7
+result > accouracy = 93.33% average time = 0.00018s total time = 0.00269s 
+Batch 8
+result > accouracy = 93.33% average time = 0.00018s total time = 0.00273s 
+Batch 9
+result > accouracy = 100.00% average time = 0.00018s total time = 0.00266s 
+Batch 10
+result > accouracy = 100.00% average time = 0.00020s total time = 0.00308s 
+==========================================
+avg result  :95.33, 0.00020
+best result :100.00, 0.00018
+==========================================
+
+It2FKNN
+Batch 1
+result > accouracy = 100.00% membership time = 0.03900ss average time = 0.00021s total time = 0.04222s 
+Batch 2
+result > accouracy = 100.00% membership time = 0.03887ss average time = 0.00019s total time = 0.04181s 
+Batch 3
+result > accouracy = 93.33% membership time = 0.04022ss average time = 0.00021s total time = 0.04354s 
+Batch 4
+result > accouracy = 80.00% membership time = 0.04070ss average time = 0.00019s total time = 0.04369s 
+Batch 5
+result > accouracy = 100.00% membership time = 0.03979ss average time = 0.00019s total time = 0.04282s 
+Batch 6
+result > accouracy = 93.33% membership time = 0.03872ss average time = 0.00019s total time = 0.04167s 
+Batch 7
+result > accouracy = 93.33% membership time = 0.04210ss average time = 0.00020s total time = 0.04523s 
+Batch 8
+result > accouracy = 100.00% membership time = 0.03891ss average time = 0.00024s total time = 0.04260s 
+Batch 9
+result > accouracy = 100.00% membership time = 0.03966ss average time = 0.00019s total time = 0.04265s 
+Batch 10
+result > accouracy = 100.00% membership time = 0.03840ss average time = 0.00019s total time = 0.04138s 
+==========================================
+avg result  :96.00, 0.00020
+best result :100.00, 0.00019
+==========================================
+
+FRNN
+Batch 1
+result > accouracy = 100.00% average time = 0.00027s total time = 0.00405s 
+Batch 2
+result > accouracy = 100.00% average time = 0.00019s total time = 0.00284s 
+Batch 3
+result > accouracy = 93.33% average time = 0.00019s total time = 0.00281s 
+Batch 4
+result > accouracy = 80.00% average time = 0.00019s total time = 0.00285s 
+Batch 5
+result > accouracy = 100.00% average time = 0.00019s total time = 0.00287s 
+Batch 6
+result > accouracy = 93.33% average time = 0.00018s total time = 0.00273s 
+Batch 7
+result > accouracy = 93.33% average time = 0.00018s total time = 0.00269s 
+Batch 8
+result > accouracy = 93.33% average time = 0.00018s total time = 0.00273s 
+Batch 9
+result > accouracy = 100.00% average time = 0.00018s total time = 0.00266s 
+Batch 10
+result > accouracy = 100.00% average time = 0.00020s total time = 0.00308s 
+==========================================
+avg result  :88.22, 0.00023
+best result :100.00, 0.00018
+==========================================
+
+FRNN FRS
+Batch 1
+result > accouracy = 100.00% average time = 0.00027s total time = 0.00405s 
+Batch 2
+result > accouracy = 100.00% average time = 0.00019s total time = 0.00284s 
+Batch 3
+result > accouracy = 93.33% average time = 0.00019s total time = 0.00281s 
+Batch 4
+result > accouracy = 80.00% average time = 0.00019s total time = 0.00285s 
+Batch 5
+result > accouracy = 100.00% average time = 0.00019s total time = 0.00287s 
+Batch 6
+result > accouracy = 93.33% average time = 0.00018s total time = 0.00273s 
+Batch 7
+result > accouracy = 93.33% average time = 0.00018s total time = 0.00269s 
+Batch 8
+result > accouracy = 93.33% average time = 0.00018s total time = 0.00273s 
+Batch 9
+result > accouracy = 100.00% average time = 0.00018s total time = 0.00266s 
+Batch 10
+result > accouracy = 100.00% average time = 0.00020s total time = 0.00308s 
+==========================================
+avg result  :90.00, 0.00022
+best result :100.00, 0.00018
+==========================================
+
+FRNN VQRS
+Batch 1
+result > accouracy = 100.00% average time = 0.00027s total time = 0.00405s 
+Batch 2
+result > accouracy = 100.00% average time = 0.00019s total time = 0.00284s 
+Batch 3
+result > accouracy = 93.33% average time = 0.00019s total time = 0.00281s 
+Batch 4
+result > accouracy = 80.00% average time = 0.00019s total time = 0.00285s 
+Batch 5
+result > accouracy = 100.00% average time = 0.00019s total time = 0.00287s 
+Batch 6
+result > accouracy = 93.33% average time = 0.00018s total time = 0.00273s 
+Batch 7
+result > accouracy = 93.33% average time = 0.00018s total time = 0.00269s 
+Batch 8
+result > accouracy = 93.33% average time = 0.00018s total time = 0.00273s 
+Batch 9
+result > accouracy = 100.00% average time = 0.00018s total time = 0.00266s 
+Batch 10
+result > accouracy = 100.00% average time = 0.00020s total time = 0.00308s 
+==========================================
+avg result  :91.20, 0.00021
+best result :100.00, 0.00018
+==========================================

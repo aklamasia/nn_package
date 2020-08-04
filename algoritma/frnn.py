@@ -88,4 +88,4 @@ def frnn(trainData, trainLabel, testData, testLabel, k):
         
     timeextract_feature= ("%0.5fs"%((time() - t1)/len(testData)))
     accouracy = round(((float(correct)/float(len(testData)))*100.0),2)
-    return accouracy,(time() - t1)/len(testData)
+    return accouracy, round(((time() - t1)/len(testData)),5)

@@ -150,4 +150,4 @@ def it2fknn(trainData, trainLabel, testData, testLabel,k):
             correct+=1
     timeextract_feature= ("%0.5fs"%((time() - t1)/len(testData)))
     accouracy = round(((float(correct)/float(len(testData)))*100.0),2)
-    return  accouracy,(time() - t1)/len(testData), timeextract
+    return  accouracy, round(((time() - t1)/len(testData)),5), timeextract
